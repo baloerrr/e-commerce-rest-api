@@ -1,7 +1,6 @@
 import express from "express";
-import { authorization, verifyToken, verifyTokenAdmin } from "../middleware/verifyToken.js";
+import { verifyAndAuthorization, verifyToken, verifyTokenAdmin } from "../middleware/verifyToken.js";
 import Cart from "../models/Cart.js";
-import Product from "../models/Product.js";
 
 const router = express.Router();
 
@@ -16,7 +15,7 @@ router.post("/", verifyToken, async(req,res) => {
     }
 });
 
-router.put("/:id", authorization ,async(req,res) => {
+router.put("/:id", verifyAndAuthorization ,async(req,res) => {
     try {
         const updateCart = await Cart.findByIdAndUpdate(req.params.id, {
             $set: req.body
@@ -30,7 +29,7 @@ router.put("/:id", authorization ,async(req,res) => {
     }
 });
 
-router.delete("/:id", authorization, async(req,res) => {
+router.delete("/:id", verifyAndAuthorization, async(req,res) => {
     try {
         await Cart.findByIdAndDelete(req.params.id);
         res.status(200).json("Cart has been deleted");
@@ -39,7 +38,7 @@ router.delete("/:id", authorization, async(req,res) => {
     }
 });
 
-router.get("/find/:userId", authorization,async(req,res) => {
+router.get("/find/:userId", verifyAndAuthorization,async(req,res) => {
     try {
         const cart = await Cart.findById(req.params.id);
         res.status(200).json(cart);
