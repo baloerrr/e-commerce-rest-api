@@ -1,11 +1,11 @@
 import express from "express";
 import CryptoJS from "crypto-js";
 import User from "../models/User.js";
-import { authorization, verifyTokenAdmin, verifyToken } from "../middleware/verifyToken.js";
+import { verifyTokenAdmin, verifyToken, verifyAndAuthorization } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-router.put("/:id", authorization ,async(req,res) => {
+router.put("/:id", verifyAndAuthorization ,async(req,res) => {
     if(req.body.password) {
         req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC).toString();
     }
@@ -23,7 +23,7 @@ router.put("/:id", authorization ,async(req,res) => {
     }
 });
 
-router.delete("/:id", authorization, async(req,res) => {
+router.delete("/:id", verifyAndAuthorization, async(req,res) => {
     try {
         await User.findByIdAndDelete(req.params.id);
         res.status(200).json("User has been deleted");
@@ -53,6 +53,8 @@ router.get("/" ,verifyTokenAdmin ,async(req,res)=> {
     res.status(500).json(err);
   }
 });
+
+
 
 router.get("/stats", verifyTokenAdmin, async(req,res)=> {
     const date = new Date();
