@@ -29,6 +29,8 @@ router.put("/:id", verifyTokenAdmin ,async(req,res) => {
     }
 });
 
+//yoi bred hoohohoho
+
 router.delete("/:id", verifyTokenAdmin, async(req,res) => {
     try {
         await Product.findByIdAndDelete(req.params.id);
