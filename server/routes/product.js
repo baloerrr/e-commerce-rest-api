@@ -29,7 +29,8 @@ router.put("/:id", verifyTokenAdmin ,async(req,res) => {
     }
 });
 
-//yoi bred hoohohoho
+//yoi bred hoohohoho okelahhhhh
+
 
 router.delete("/:id", verifyTokenAdmin, async(req,res) => {
     try {
